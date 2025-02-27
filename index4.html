@@ -165,19 +165,25 @@
         <p>© 2025 Анонимные Решения. Все права защищены.</p>
     </footer>
 
-    <script>
-        function loadMarkdown(section) {
-            fetch(`law/${section}.md`)
-                .then(response => response.text())
-                .then(text => {
-                    const converter = new showdown.Converter();
-                    document.getElementById("content").innerHTML = converter.makeHtml(text);
-                })
-                .catch(error => console.error("Ошибка загрузки:", error));
-        }
+<script>
+    function loadMarkdown(section) {
+        fetch(`law/${section}.md`)
+            .then(response => {
+                if (!response.ok) throw new Error(`Ошибка загрузки ${section}.md`);
+                return response.text();
+            })
+            .then(text => {
+                const converter = new showdown.Converter();
+                document.getElementById("content").innerHTML = converter.makeHtml(text);
+            })
+            .catch(error => console.error("Ошибка:", error));
+    }
 
-        document.addEventListener("DOMContentLoaded", () => loadMarkdown("confidentiality"));
-    </script>
+    // ✅ Загружаем первый раздел сразу после загрузки страницы  
+    window.onload = function() {
+        setTimeout(() => loadMarkdown("confidentiality"), 100); // Короткая задержка на 100мс для корректной загрузки
+    };
+</script>
 
 </body>
 </html>
