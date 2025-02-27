@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Юридический раздел | Анонимные Решения</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.0.3/showdown.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle, #1e2a38, #0d1117);
+            color: #e0e0e0;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(40, 50, 60, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 0;
+        }
+
+        .navbar ul li a {
+            color: #d0d8e0;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #8cc7c0;
+        }
+
+        header {
+            margin-top: 100px;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 40px auto;
+            text-align: left;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 12px 16px;
+            color: #76c7c0;
+            transition: 0.3s;
+            flex: 1;
+            text-align: center;
+            border-right: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-links button:last-child {
+            border-right: none;
+        }
+
+        .nav-links button:hover,
+        .nav-links button.active {
+            color: #ffffff;
+        }
+
+        .content {
+            padding: 20px;
+            font-size: 1rem;
+            color: #b0b0b0;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.3s ease;
+        }
+
+        .content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #7a7a7a;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links button {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                padding: 10px 0;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="law.html">Юридический раздел</a></li>
+            <li><a href="about.html">О нас</a></li>
+            <li><a href="crypto.html">Проверка криптоактивов</a></li>
+            <li><a href="reviews.html">Отзывы</a></li>
+            <li><a href="contact.html">Связаться</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Юридический раздел</h1>
+        <p>Всё о защите ваших активов и прав</p>
+    </header>
+
+    <div class="container">
+        <div class="nav-links">
+            <button onclick="loadMarkdown('C:\Users\Acer\Desktop\ПРоект сайта\Новая папка\law\point1.md')">Конфиденциальность</button>
+            <button onclick="loadMarkdown('point2.md')">Безопасность транзакций</button>
+            <button onclick="loadMarkdown('point3.md')">Юридическая поддержка</button>
+            <button onclick="loadMarkdown('point4.md')">Условия сотрудничества</button>
+        </div>
+
+        <div id="content" class="content active">Загрузка...</div>
+    </div>
+
+    <footer>
+        <p>© 2025 Анонимные Решения. Все права защищены.</p>
+    </footer>
+
+    <script>
+        function loadMarkdown(section) {
+            fetch(`law/${section}.md`)
+                .then(response => response.text())
+                .then(text => {
+                    const converter = new showdown.Converter();
+                    document.getElementById("content").innerHTML = converter.makeHtml(text);
+                })
+                .catch(error => console.error("Ошибка загрузки:", error));
+        }
+
+        document.addEventListener("DOMContentLoaded", () => loadMarkdown("confidentiality"));
+    </script>
+
+</body>
+</html>

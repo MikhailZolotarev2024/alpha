@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анонимные Решения</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+		@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+
+        /* Общие стили */
+html {
+            scroll-behavior: smooth;
+        }
+ @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+ .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .contact-form button {
+            margin-top: 15px;
+            background: linear-gradient(90deg, #76c7c0, #4c9e94);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .contact-form button:hover {
+            background: linear-gradient(90deg, #5aa69e, #3b7d74);
+        }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle, #3a4f66, #2b3c4d);
+            color: #d0d8e0;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 0;
+        }
+
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(40, 50, 60, 0.4), rgba(30, 40, 50, 0.4));
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s;
+        }
+
+        .navbar:hover {
+            background: linear-gradient(to bottom, rgba(40, 50, 60, 0.4), rgba(30, 40, 50, 0.4));
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .navbar ul li {
+            position: relative;
+            padding: 5px;
+        }
+
+        .navbar ul li a {
+            color: #d0d8e0;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #8cc7c0;
+            transform: scale(1.05);
+        }
+
+        .navbar ul li:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 8px;
+            height: 1px;
+            background: linear-gradient(to bottom, rgba(40, 50, 60, 0.4), rgba(30, 40, 50, 0.4));
+            transition: background 0.3s;
+        }
+
+        .navbar ul li:hover:not(:last-child)::after {
+            background: #76c7c0;
+        }
+
+.menu-icon {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1002;
+        }
+
+        .menu-icon div {
+            width: 30px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 3px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .menu-icon.active div:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .menu-icon.active div:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-icon.active div:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .menu-dropdown a {
+            display: block;
+            text-decoration: none;
+            color: #e0e0e0;
+            padding: 10px;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .menu-dropdown a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #76c7c0;
+        }
+.menu-dropdown.active {
+  display: block;
+}
+        /* Логотип */
+        .logo-container {
+            position: absolute;
+            margin-top: 70px;
+			margin-bottom:15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+        }
+
+        .logo-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Контент */
+        header, .news-widget, main {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 120px 0 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-top: 40px;
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        header h1:hover {
+            color: #76c7c0;
+        }
+
+        header p {
+            margin: 0px;
+            font-size: 1.2rem;
+            color: #b3b3b3;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        header p:hover {
+            color: #e0e0e0;
+        }
+
+        .card, .news-widget {
+            background: linear-gradient(to bottom, rgba(40, 50, 60, 0.4), rgba(30, 40, 50, 0.4));
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+        }
+
+        .card:hover, .news-widget:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2, .news-widget h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        .card h3{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;       /* Можно чуть увеличить, например, 1.1rem */
+    line-height: 1.6;      /* Комфортная межстрочная высота */
+    color: #b3b3b3;        /* Мягкий светлый оттенок на тёмном фоне */
+    margin: 20px 0;        /* Отступы сверху/снизу */
+    text-align: center;    /* Если хотите центрировать текст */
+}
+        .card p, .news-widget p, .news-item a {
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #b3b3b3;
+            transition: color 0.3s;
+        }
+
+        .card p:hover, .news-item a:hover {
+            color: #e0e0e0;
+        }
+
+        .news-widget .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .news-widget .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-widget .news-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .news-widget .news-footer {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .news-widget .news-footer a {
+            color: #b3b3b3;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .news-widget .news-footer a:hover {
+            color: #ffffff;
+        }
+
+        /* Expandable секции */
+        .expandable-section {
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .expandable-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .expandable-header {
+            background: linear-gradient(to bottom, rgba(40, 50, 60, 0.4), rgba(30, 40, 50, 0.4));
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s, color 0.3s;
+            backdrop-filter: blur(8px);
+        }
+
+        .expandable-header::after {
+            content: '▾';
+            position: absolute;
+            right: 20px;
+            font-size: 0.8rem;
+            color: #76c7c0;
+            transition: transform 0.3s;
+        }
+
+        .expandable-section.active .expandable-header::after {
+            transform: rotate(180deg);
+        }
+
+        .expandable-header:hover {
+            color: #76c7c0;
+        }
+
+        .expandable-body {
+            background: linear-gradient(to bottom, rgba(40, 50, 60, 0.1), rgba(30, 40, 50, 0.1));
+            color: #b3b3b3;
+            padding: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            backdrop-filter: blur(8px);
+        }
+
+        .expandable-section.active .expandable-body {
+            max-height: 300px;
+            padding: 20px;
+            opacity: 1;
+        }
+
+        /* CTA кнопка */
+        .cta {
+            margin-top: 30px;
+        }
+
+        .cta a {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: linear-gradient(90deg, #76c7c0, #4c9e94);
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .cta a:hover {
+            background: linear-gradient(90deg, #5aa69e, #3b7d74);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Футер */
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #7a7a7a;
+            transition: color 0.3s;
+        }
+
+        footer:hover {
+            color: #b3b3b3;
+        }
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr); /* Две колонки по умолчанию, можно расширить */
+    gap: 20px;
+    width: 100%;
+    margin: 30px auto;
+
+	align-items: center;
+    justify-content: center;
+}
+
+.icon-card {
+    background: linear-gradient(to bottom, rgba(40, 50, 60, 0.4), rgba(30, 40, 50, 0.4));
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    transition: box-shadow 0.3s, transform 0.3s;
+    text-align: center;
+	align-items: center;
+    justify-content: center;
+}
+.icon-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+}
+
+.icon-img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    filter: grayscale(100%) opacity(0.8);
+    transition: filter 0.3s;
+	align-items: center;
+    justify-content: center;
+}
+
+.icon-card:hover .icon-img {
+    filter: grayscale(0%) opacity(1);
+}
+
+.icon-card p {
+    margin: 0;
+    font-size: 1rem;
+    color: #b3b3b3;
+    font-weight: 400;
+    transition: color 0.3s;
+}
+
+.icon-card:hover p {
+    color: #e0e0e0;
+}
+
+        /* Медиа-запросы */
+        @media (max-width: 768px) {
+            .logo-container {
+                top: 10px; /* Меньше отступ сверху */
+                width: 80px; /* Уменьшаем размер логотипа */
+                height: 80px;
+            }
+
+            .logo-img {
+        width: 80px;
+        height: 80px;
+            }
+
+            .menu-icon {
+                display: flex;
+            }
+
+            .navbar ul {
+                display: none;
+            }
+
+            header, .news-widget, main {
+                padding: 80px 0 15px;
+                max-width: 90%;
+            }
+
+            .card, .news-widget {
+                padding: 15px;
+            }
+
+            .card h2, .news-widget h2 {
+                font-size: 1.4rem;
+            }
+
+            .card p, .news-item a {
+                font-size: 0.9rem;
+            }
+
+            .logo-container {
+                top: 10px;
+            }
+
+            .logo-img {
+                width: 80px;
+                height: 80px;
+            }
+.icon-grid {
+        grid-template-columns: repeat(2, 2fr); /* Одна колонка на мобильных устройствах */
+
+        padding: 0 5px;
+    }
+
+    .icon-card {
+        padding: 15px;
+    }
+
+    .icon-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .icon-card p {
+        font-size: 0.9rem;
+    }
+        }
+
+        @media (min-width: 769px) {
+            .navbar ul {
+                display: flex;
+            }
+
+            .menu-icon {
+                display: none;
+            }
+        }
+		
+.no-select {
+  /* Для современных браузеров */
+  user-select: none;
+
+  /* Префиксы для старых версий */
+  -webkit-user-select: none;  /* Chrome/Safari/Opera */
+  -moz-user-select: none;     /* Старые версии Firefox */
+  -ms-user-select: none;      /* IE/старые Edge */
+  -o-user-select: none;       /* Некоторые старые браузеры Opera */
+}
+    </style>
+    <script>
+        // Переключение выезжающего меню
+function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const menuDropdown = document.querySelector('.menu-dropdown');
+            menuIcon.classList.toggle('active');
+            menuDropdown.classList.toggle('active');
+			}
+        // Переключение expandable секций
+        function toggleSection(event) {
+            const section = event.target.parentElement;
+            section.classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#home">Юридический Раздел</a></li>
+            <li><a href="index3.html">Отзывы</a></li>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="index2.html">Проверка криптоактивов</a></li>
+            <li><a href="#contact">Связаться</a></li>
+        </ul>
+    </nav>
+	<div class="menu-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    <div class="menu-dropdown">
+        <a href="#home">Юридический Раздел</a>
+        <a href="#legal">ЮОтзывы</a>
+        <a href="index.html">Главная</a>
+        <a href="index2.html">Проверка криптоактивов</a>
+        <a href="#contact">Связаться</a>
+    </div>
+    <div class="logo-container">
+        <img src="logo.png" alt="Логотип" class="logo-img" loading="lazy">
+    </div>
+    <header>
+        <h1>Анонимные Решения</h1>
+        <p>Эффективность. Конфиденциальность. Результат.</p>
+    </header>
+    <div class="news-widget">
+        <h2>Последние новости</h2>
+        <div class="news-item">
+            <a href="#">Мы внедрили новую систему безопасности</a>
+        </div>
+        <div class="news-item">
+            <a href="#">Обновление платформы: новые функции</a>
+        </div>
+        <div class="news-item">
+            <a href="#">Запуск партнерской программы</a>
+        </div>
+        <div class="news-footer">
+            <a href="#">Смотреть все новости</a>
+        </div>
+    </div>
+    <main>
+        <div class="card">
+            <h2>Добро пожаловать</h2>
+            <p>Мы предлагаем безопасные и профессиональные решения для возврата ваших средств. Доверьтесь нашему опыту и технологиям.</p>
+        </div>
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleSection(event)">Кто мы и чем занимаемся</div>
+            <div class="expandable-body">Мы – команда профессионалов, специализирующихся на возврате средств. Наша эффективность подтверждена доверием клиентов и успешными кейсами.</div>
+        </div>
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleSection(event)">Наши услуги</div>
+            <div class="expandable-body">Мы предоставляем широкий спектр услуг по возврату средств, анализу криптоактивов и юридической поддержке.</div>
+        </div>
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleSection(event)">Почему выбирают нас</div>
+            <div class="expandable-body">Мы гарантируем конфиденциальность, высокую скорость работы и надежность наших решений.</div>
+        </div>
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleSection(event)">Как связаться</div>
+            <div class="expandable-body">Свяжитесь с нами через наш сайт или мессенджеры, и мы оперативно ответим на ваш запрос.</div>
+        </div>
+<div class="card">
+
+            <h3>Мы объединяем опыт специалистов из разных областей, чтобы комплексно решать задачи по возврату средств и защите интересов наших клиентов. Наша команда обеспечивает полную конфиденциальность на каждом этапе — от первичного аудита и сбора доказательств до юридического сопровождения и взаимодействия с финансовыми организациями. Мы работаем как с традиционными, так и с цифровыми активами, используя передовые инструменты анализа и международные партнёрские сети. Главная цель — максимально оперативно и безопасно восстановить ваши активы, сохраняя анонимность и прозрачность всех процессов.</h3>
+        </div>
+		<div class="icon-grid">
+    <div class="icon-card no-select">
+        <img src="icon1.svg" alt="Конфиденциальная встреча" class="icon-img">
+        <p>Конфиденциальная встреча</p>
+    </div>
+    <div class="icon-card no-select">
+        <img src="icon2.svg" alt="Согласование цены" class="icon-img">
+        <p>Согласование цены</p>
+    </div>
+    <div class="icon-card no-select">
+        <img src="icon3.svg" alt="Действие" class="icon-img">
+        <p>Действие</p>
+    </div>
+    <div class="icon-card no-select">
+        <img src="icon4.svg" alt="Результат" class="icon-img">
+        <p>Результат</p>
+    </div>
+</div>
+         <div class="contact-form">
+            <h2>Связаться с нами</h2>
+            <input type="text" placeholder="Ваше имя">
+            <input type="email" placeholder="Ваш email">
+            <textarea placeholder="Ваше сообщение"></textarea>
+            <button type="submit">Отправить</button>
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 Анонимные Решения. Все права защищены.</p>
+    </footer>
+</body>
+</html>

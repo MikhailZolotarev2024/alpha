@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Отзывы клиентов о нашей работе. Мы ценим ваше мнение!">
+    <meta name="keywords" content="отзывы, клиенты, доверие, анонимные решения">
+    <meta name="author" content="Анонимные Решения">
+    <title>Отзывы клиентов | Анонимные Решения</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle, #3a4f66, #2b3c4d);
+            color: #d0d8e0;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(40, 50, 60, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 0;
+        }
+
+        .navbar ul li a {
+            color: #d0d8e0;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #8cc7c0;
+        }
+
+        header {
+            margin-top: 100px;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #b3b3b3;
+        }
+
+        .section {
+            margin: 40px auto;
+            max-width: 800px;
+            background: rgba(40, 50, 60, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .review-form input,
+        .review-form textarea {
+            width: 90%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .review-form button {
+            margin-top: 10px;
+            background: linear-gradient(90deg, #76c7c0, #4c9e94);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .review-form button:hover {
+            background: linear-gradient(90deg, #5aa69e, #3b7d74);
+        }
+
+        .review-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .review {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .review strong {
+            display: block;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .review p {
+            color: #d0d8e0;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #7a7a7a;
+        }
+
+        @media (max-width: 768px) {
+            .review-form input, .review-form textarea {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="#home">Юридический Раздел</a></li>
+            <li><a href="index3.html">Отзывы</a></li>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="index2.html">Проверка криптоактивов</a></li>
+            <li><a href="#contact">Связаться</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Отзывы клиентов</h1>
+        <p>Мы ценим ваше мнение! Оставьте отзыв о нашей работе.</p>
+    </header>
+
+    <section class="section">
+        <h2>Добавить отзыв</h2>
+        <div class="review-form">
+            <input type="text" id="reviewName" placeholder="Ваше имя" required>
+            <textarea id="reviewText" placeholder="Ваш отзыв" required></textarea>
+            <button onclick="addReview()">Оставить отзыв</button>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Отзывы наших клиентов</h2>
+        <div class="review-list">
+            <!-- Отзывы будут добавляться сюда -->
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Анонимные Решения. Все права защищены.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadReviews);
+
+        function addReview() {
+            const name = document.getElementById("reviewName").value.trim();
+            const text = document.getElementById("reviewText").value.trim();
+            if (!name || !text) {
+                alert("Пожалуйста, заполните все поля!");
+                return;
+            }
+
+            const review = { name, text };
+            let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+            reviews.push(review);
+            localStorage.setItem("reviews", JSON.stringify(reviews));
+
+            document.getElementById("reviewName").value = "";
+            document.getElementById("reviewText").value = "";
+
+            displayReview(review);
+        }
+
+        function loadReviews() {
+            const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+            reviews.forEach(displayReview);
+        }
+
+        function displayReview(review) {
+            const reviewList = document.querySelector(".review-list");
+            const div = document.createElement("div");
+            div.classList.add("review");
+            div.innerHTML = `<strong>${review.name}</strong><p>${review.text}</p>`;
+            reviewList.prepend(div);
+        }
+    </script>
+
+</body>
+</html>
