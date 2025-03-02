@@ -393,6 +393,24 @@ function toggleMenu() {
             const section = event.target.parentElement;
             section.classList.toggle('active');
         }
+        document.getElementById("contactForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    const response = await fetch("http://localhost:3000/send", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, message })
+    });
+
+    const result = await response.json();
+    alert(result.success || result.error);
+});
     </script>
 </head>
 <body>
@@ -484,9 +502,9 @@ function toggleMenu() {
 </div>
          <div class="contact-form">
             <h2>Связаться с нами</h2>
-            <input type="text" placeholder="Ваше имя">
-            <input type="email" placeholder="Ваш email">
-            <textarea placeholder="Ваше сообщение"></textarea>
+    <input type="text" id="name" placeholder="Ваше имя" required>
+    <input type="email" id="email" placeholder="Ваш email" required>
+    <textarea id="message" placeholder="Ваше сообщение" required></textarea>
             <button type="submit">Отправить</button>
         </div>
     </main>

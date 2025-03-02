@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Юридический раздел | Анонимные Решения</title>
-	<link rel="stylesheet" href="general.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="general.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.0.3/showdown.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
 
 
         .container {
@@ -88,6 +89,7 @@
     </style>
 </head>
 <body>
+
     <nav class="navbar">
         <ul>
             <li><a href="index4.html">Юридический Раздел</a></li>
@@ -116,6 +118,14 @@
         <h1>Анонимные Решения</h1>
         <p>Эффективность. Конфиденциальность. Результат.</p>
     </header>
+    <div class="container">
+        <div class="nav-links">
+            <button onclick="loadMarkdown('point1')">Конфиденциальность</button>
+            <button onclick="loadMarkdown('point2')">Безопасность транзакций</button>
+            <button onclick="loadMarkdown('point3')">Юридическая поддержка</button>
+            <button onclick="loadMarkdown('point4')">Условия сотрудничества</button>
+        </div>
+
         <div id="content" class="content active">Загрузка...</div>
     </div>
 
@@ -123,6 +133,19 @@
         <p>© 2025 Анонимные Решения. Все права защищены.</p>
     </footer>
 
+    <script>
+        function loadMarkdown(section) {
+            fetch(`law/${section}.md`)
+                .then(response => response.text())
+                .then(text => {
+                    const converter = new showdown.Converter();
+                    document.getElementById("content").innerHTML = converter.makeHtml(text);
+                })
+                .catch(error => console.error("Ошибка загрузки:", error));
+        }
+
+        document.addEventListener("DOMContentLoaded", () => loadMarkdown("confidentiality"));
+    </script>
 <script>
     function loadMarkdown(section) {
         fetch(`law/${section}.md`)
@@ -139,7 +162,7 @@
 
     // ✅ Загружаем первый раздел сразу после загрузки страницы  
     window.onload = function() {
-        setTimeout(() => loadMarkdown("confidentiality"), 100); // Короткая задержка на 100мс для корректной загрузки
+        setTimeout(() => loadMarkdown("point1"), 100); // Короткая задержка на 100мс для корректной загрузки
     };
 </script>
 
