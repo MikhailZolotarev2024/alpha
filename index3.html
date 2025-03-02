@@ -8,68 +8,20 @@
     <meta name="author" content="Анонимные Решения">
     <title>Отзывы клиентов | Анонимные Решения</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="general.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.0.3/showdown.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle, #3a4f66, #2b3c4d);
-            color: #d0d8e0;
-            text-align: center;
-            min-height: 100vh;
-        }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(40, 50, 60, 0.4);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            z-index: 1000;
-        }
 
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            padding: 0;
-        }
-
-        .navbar ul li a {
-            color: #d0d8e0;
-            font-size: 16px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .navbar ul li a:hover {
-            color: #8cc7c0;
-        }
-
-        header {
-            margin-top: 100px;
-        }
-
-        h1 {
-            color: #ffffff;
-            font-size: 2.5rem;
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: #b3b3b3;
-        }
-
-        .section {
-            margin: 40px auto;
-            max-width: 800px;
-            background: rgba(40, 50, 60, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
+.section {
+    width: 80%; /* Делаем шире */
+    max-width: 900px; /* Чтобы на больших экранах не было слишком широко */
+    background: rgba(40, 50, 60, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 
         .review-form input,
         .review-form textarea {
@@ -82,6 +34,7 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
+
         }
 
         .review-form button {
@@ -100,18 +53,20 @@
             background: linear-gradient(90deg, #5aa69e, #3b7d74);
         }
 
-        .review-list {
-            text-align: left;
-            margin-top: 20px;
-        }
-
-        .review {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
+.review-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем отзывы */
+}
+.review {
+    width: 90%;
+    max-width: 800px; /* Делаем максимум ширину, чтобы на больших экранах не расползались */
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
         .review strong {
             display: block;
             color: #ffffff;
@@ -120,6 +75,7 @@
 
         .review p {
             color: #d0d8e0;
+            text-align:left;
         }
 
         footer {
@@ -127,7 +83,13 @@
             font-size: 0.9rem;
             color: #7a7a7a;
         }
-
+.review small {
+    display: block;
+    color: #a0a0a0;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    text-align: right;
+}
         @media (max-width: 768px) {
             .review-form input, .review-form textarea {
                 width: 100%;
@@ -136,20 +98,33 @@
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <ul>
-            <li><a href="#home">Юридический Раздел</a></li>
+            <li><a href="index4.html">Юридический Раздел</a></li>
             <li><a href="index3.html">Отзывы</a></li>
             <li><a href="index.html">Главная</a></li>
             <li><a href="index2.html">Проверка криптоактивов</a></li>
             <li><a href="#contact">Связаться</a></li>
         </ul>
     </nav>
-
+	<div class="menu-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    <div class="menu-dropdown">
+        <a href="index4.html">Юридический Раздел</a>
+        <a href="index3.html">Отзывы</a>
+        <a href="index.html">Главная</a>
+        <a href="index2.html">Проверка криптоактивов</a>
+        <a href="#contact">Связаться</a>
+    </div>
+    <div class="logo-container">
+        <img src="logo.png" alt="Логотип" class="logo-img" loading="lazy">
+    </div>
     <header>
-        <h1>Отзывы клиентов</h1>
-        <p>Мы ценим ваше мнение! Оставьте отзыв о нашей работе.</p>
+        <h1>Анонимные Решения</h1>
+        <p>Эффективность. Конфиденциальность. Результат.</p>
     </header>
 
     <section class="section">
@@ -173,39 +148,62 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", loadReviews);
+document.addEventListener("DOMContentLoaded", () => {
+    loadReviews();
+    loadMarkdownReviews();
+});
 
-        function addReview() {
-            const name = document.getElementById("reviewName").value.trim();
-            const text = document.getElementById("reviewText").value.trim();
-            if (!name || !text) {
-                alert("Пожалуйста, заполните все поля!");
-                return;
-            }
+function addReview() {
+    const name = document.getElementById("reviewName").value.trim();
+    const text = document.getElementById("reviewText").value.trim();
+    if (!name || !text) {
+        alert("Пожалуйста, заполните все поля!");
+        return;
+    }
 
-            const review = { name, text };
-            let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
-            reviews.push(review);
-            localStorage.setItem("reviews", JSON.stringify(reviews));
+    const date = new Date().toLocaleString("ru-RU", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 
-            document.getElementById("reviewName").value = "";
-            document.getElementById("reviewText").value = "";
+    const review = { name, text, date };
+    let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+    reviews.push(review);
+    localStorage.setItem("reviews", JSON.stringify(reviews));
 
-            displayReview(review);
-        }
+    document.getElementById("reviewName").value = "";
+    document.getElementById("reviewText").value = "";
 
-        function loadReviews() {
-            const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
-            reviews.forEach(displayReview);
-        }
+    displayReview(review);
+}
 
-        function displayReview(review) {
-            const reviewList = document.querySelector(".review-list");
-            const div = document.createElement("div");
-            div.classList.add("review");
-            div.innerHTML = `<strong>${review.name}</strong><p>${review.text}</p>`;
-            reviewList.prepend(div);
-        }
+function loadReviews() {
+    const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+    reviews.forEach(displayReview);
+}
+
+function displayReview(review) {
+    const reviewList = document.querySelector(".review-list");
+    const div = document.createElement("div");
+    div.classList.add("review");
+    div.innerHTML = `<strong>${review.name}</strong><p>${review.text}</p><small>${review.date}</small>`;
+    reviewList.prepend(div);
+}
+
+// 🔥 Загружаем отзывы из `reviews.md`
+function loadMarkdownReviews() {
+    fetch("reviews.md")
+        .then(response => response.text())
+        .then(text => {
+            const converter = new showdown.Converter();
+            const html = converter.makeHtml(text);
+            document.querySelector(".review-list").innerHTML += html;
+        })
+        .catch(error => console.error("Ошибка загрузки отзывов:", error));
+}
     </script>
 
 </body>

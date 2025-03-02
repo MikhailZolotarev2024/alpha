@@ -4,57 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Юридический раздел | Анонимные Решения</title>
+	<link rel="stylesheet" href="general.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.0.3/showdown.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle, #1e2a38, #0d1117);
-            color: #e0e0e0;
-            text-align: center;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(40, 50, 60, 0.4);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            z-index: 1000;
-        }
-
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            padding: 0;
-        }
-
-        .navbar ul li a {
-            color: #d0d8e0;
-            font-size: 16px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .navbar ul li a:hover {
-            color: #8cc7c0;
-        }
-
-        header {
-            margin-top: 100px;
-        }
-
-        h1 {
-            color: #ffffff;
-            font-size: 2.5rem;
-        }
 
         .container {
             max-width: 800px;
@@ -133,31 +88,34 @@
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <ul>
+            <li><a href="index4.html">Юридический Раздел</a></li>
+            <li><a href="index3.html">Отзывы</a></li>
             <li><a href="index.html">Главная</a></li>
-            <li><a href="law.html">Юридический раздел</a></li>
-            <li><a href="about.html">О нас</a></li>
-            <li><a href="crypto.html">Проверка криптоактивов</a></li>
-            <li><a href="reviews.html">Отзывы</a></li>
-            <li><a href="contact.html">Связаться</a></li>
+            <li><a href="index2.html">Проверка криптоактивов</a></li>
+            <li><a href="#contact">Связаться</a></li>
         </ul>
     </nav>
-
-    <header>
-        <h1>Юридический раздел</h1>
-        <p>Всё о защите ваших активов и прав</p>
-    </header>
-
-    <div class="container">
-        <div class="nav-links">
-            <button onclick="loadMarkdown('point1')">Конфиденциальность</button>
-            <button onclick="loadMarkdown('point2')">Безопасность транзакций</button>
-            <button onclick="loadMarkdown('point3')">Юридическая поддержка</button>
-            <button onclick="loadMarkdown('point4')">Условия сотрудничества</button>
+	<div class="menu-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-
+    <div class="menu-dropdown">
+        <a href="index4.html">Юридический Раздел</a>
+        <a href="index3.html">Отзывы</a>
+        <a href="index.html">Главная</a>
+        <a href="index2.html">Проверка криптоактивов</a>
+        <a href="#contact">Связаться</a>
+    </div>
+    <div class="logo-container">
+        <img src="logo.png" alt="Логотип" class="logo-img" loading="lazy">
+    </div>
+    <header>
+        <h1>Анонимные Решения</h1>
+        <p>Эффективность. Конфиденциальность. Результат.</p>
+    </header>
         <div id="content" class="content active">Загрузка...</div>
     </div>
 
@@ -181,7 +139,7 @@
 
     // ✅ Загружаем первый раздел сразу после загрузки страницы  
     window.onload = function() {
-        setTimeout(() => loadMarkdown("point1"), 100); // Короткая задержка на 100мс для корректной загрузки
+        setTimeout(() => loadMarkdown("confidentiality"), 100); // Короткая задержка на 100мс для корректной загрузки
     };
 </script>
 
