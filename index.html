@@ -394,22 +394,25 @@ function toggleMenu() {
             section.classList.toggle('active');
         }
 document.getElementById("contactForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
+    event.preventDefault(); // Предотвращаем стандартную отправку формы
 
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const message = document.getElementById("message").value;
 
-    const response = await fetch("https://af2b-185-244-159-19.ngrok-free.app/send", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email, message })
-    });
+    try {
+        const response = await fetch("https://af2b-185-244-159-19.ngrok-free.app", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, message })
+        });
 
-    const result = await response.json();
-    alert(result.success || result.error);
+        const result = await response.json();
+        alert(result.success || result.error);
+    } catch (error) {
+        console.error("Ошибка при отправке формы:", error);
+        alert("Ошибка при отправке. Проверьте соединение с сервером.");
+    }
 });
     </script>
 </head>
@@ -500,13 +503,15 @@ document.getElementById("contactForm").addEventListener("submit", async function
         <p>Результат</p>
     </div>
 </div>
-         <div class="contact-form">
-            <h2>Связаться с нами</h2>
-    <input type="text" id="name" placeholder="Ваше имя" required>
-    <input type="email" id="email" placeholder="Ваш email" required>
-    <textarea id="message" placeholder="Ваше сообщение" required></textarea>
-            <button type="submit">Отправить</button>
-        </div>
+<div class="contact-form">
+    <h2>Связаться с нами</h2>
+    <form id="contactForm">
+        <input type="text" id="name" placeholder="Ваше имя" required>
+        <input type="email" id="email" placeholder="Ваш email" required>
+        <textarea id="message" placeholder="Ваше сообщение" required></textarea>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
     </main>
     <footer>
         <p>© 2025 Анонимные Решения. Все права защищены.</p>
