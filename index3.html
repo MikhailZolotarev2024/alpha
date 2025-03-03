@@ -54,35 +54,39 @@
         }
 
 .review-list {
-    width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Центрируем отзывы */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px; /* Расстояние между карточками */
 }
+
 .review {
-    width: 90%;
-    max-width: 800px; /* Делаем максимум ширину, чтобы на больших экранах не расползались */
+    width: 45%; /* Две карточки в ряд */
+    max-width: 400px;
     background: rgba(255, 255, 255, 0.1);
     padding: 15px;
     border-radius: 10px;
-    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
 }
-        .review strong {
-            display: block;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
 
-        .review p {
-            color: #d0d8e0;
-            text-align:left;
-        }
+.review:hover {
+    transform: scale(1.05);
+}
 
-        footer {
-            margin-top: 50px;
-            font-size: 0.9rem;
-            color: #7a7a7a;
-        }
+.review strong {
+    display: block;
+    color: #ffffff;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.review p {
+    color: #d0d8e0;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
 .review small {
     display: block;
     color: #a0a0a0;
@@ -136,75 +140,17 @@
         </div>
     </section>
 
-    <section class="section">
-        <h2>Отзывы наших клиентов</h2>
-        <div class="review-list">
-            <!-- Отзывы будут добавляться сюда -->
-        </div>
-    </section>
+<section class="section">
+    <h2>Отзывы наших клиентов</h2>
+    <div class="review-list">
+        <!-- Сюда добавляются отзывы -->
+    </div>
+</section>
 
     <footer>
         <p>© 2025 Анонимные Решения. Все права защищены.</p>
     </footer>
 
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
-    loadReviews();
-    loadMarkdownReviews();
-});
-
-function addReview() {
-    const name = document.getElementById("reviewName").value.trim();
-    const text = document.getElementById("reviewText").value.trim();
-    if (!name || !text) {
-        alert("Пожалуйста, заполните все поля!");
-        return;
-    }
-
-    const date = new Date().toLocaleString("ru-RU", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-    });
-
-    const review = { name, text, date };
-    let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
-    reviews.push(review);
-    localStorage.setItem("reviews", JSON.stringify(reviews));
-
-    document.getElementById("reviewName").value = "";
-    document.getElementById("reviewText").value = "";
-
-    displayReview(review);
-}
-
-function loadReviews() {
-    const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
-    reviews.forEach(displayReview);
-}
-
-function displayReview(review) {
-    const reviewList = document.querySelector(".review-list");
-    const div = document.createElement("div");
-    div.classList.add("review");
-    div.innerHTML = `<strong>${review.name}</strong><p>${review.text}</p><small>${review.date}</small>`;
-    reviewList.prepend(div);
-}
-
-// 🔥 Загружаем отзывы из `reviews.md`
-function loadMarkdownReviews() {
-    fetch("reviews.md")
-        .then(response => response.text())
-        .then(text => {
-            const converter = new showdown.Converter();
-            const html = converter.makeHtml(text);
-            document.querySelector(".review-list").innerHTML += html;
-        })
-        .catch(error => console.error("Ошибка загрузки отзывов:", error));
-}
-    </script>
-
+<script src="script.js"></script>
 </body>
 </html>
