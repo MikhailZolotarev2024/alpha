@@ -106,4 +106,4 @@ function loadMarkdownReviews() {
             document.querySelector(".review-list").innerHTML += html;
         })
         .catch(error => console.error("Ошибка загрузки отзывов:", error));
-});
+};
