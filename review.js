@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
     loadReviews();
-    loadMarkdownReviews();
 });
 
 function addReview() {
@@ -20,20 +19,37 @@ function addReview() {
     });
 
     const review = { name, text, date };
+
+    // Получаем существующие отзывы из localStorage или создаём новый массив
     let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
     reviews.push(review);
     localStorage.setItem("reviews", JSON.stringify(reviews));
 
+    // Очищаем поля формы
     document.getElementById("reviewName").value = "";
     document.getElementById("reviewText").value = "";
 
+    // Выводим новый отзыв на страницу
     displayReview(review);
-}
+};
 
 function loadReviews() {
-    const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
-    reviews.forEach(displayReview);
-}
+    // Пробуем получить отзывы из localStorage
+    let reviews = JSON.parse(localStorage.getItem("reviews"));
+    if (!reviews) {
+        // Если отзывов нет, загружаем их из файла reviews.json
+        fetch("reviews.json")
+            .then(response => response.json())
+            .then(data => {
+                // Сохраняем полученные отзывы в localStorage
+                localStorage.setItem("reviews", JSON.stringify(data));
+                data.forEach(displayReview);
+            })
+            .catch(error => console.error("Ошибка загрузки JSON отзывов:", error));
+    } else {
+        reviews.forEach(displayReview);
+    }
+};
 
 function displayReview(review) {
     const reviewList = document.querySelector(".review-list");
@@ -41,42 +57,4 @@ function displayReview(review) {
     div.classList.add("review");
     div.innerHTML = `<strong>${review.name}</strong><p>${review.text}</p><small>${review.date}</small>`;
     reviewList.prepend(div);
-	console.log(review);
-}
-
-// 🔥 Загружаем отзывы из `reviews.md`
-function loadMarkdownReviews() {
-    fetch("reviews.md")
-        .then(response => response.text())
-        .then(text => {
-            const converter = new showdown.Converter();
-            const html = converter.makeHtml(text);
-            
-            // Временный контейнер для парсинга HTML
-            const tempContainer = document.createElement("div");
-            tempContainer.innerHTML = html;
-            console.log(tempContainer.innerHTML);
-            // Найдем все блоки отзывов
-            const paragraphs = tempContainer.querySelectorAll("li");
-            paragraphs.forEach(paragraph => {
-                let name = "Анонимный пользователь";
-                let date = "Дата неизвестна";
-                let text = paragraph.innerHTML.trim();
-
-                // Попробуем найти имя и дату перед отзывом
-                const prevElement = paragraph.previousElementSibling;
-                if (prevElement && prevElement.tagName === "STRONG") {
-                    name = prevElement.innerText;
-                }
-
-                const prevPrevElement = prevElement ? prevElement.previousElementSibling : null;
-                if (prevPrevElement && prevPrevElement.tagName === "SMALL") {
-                    date = prevPrevElement.innerText;
-                }
-
-                const review = { name, text, date };
-                displayReview(review);
-            });
-        })
-        .catch(error => console.error("Ошибка загрузки отзывов:", error));
 };
