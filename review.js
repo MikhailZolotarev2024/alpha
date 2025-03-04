@@ -57,7 +57,7 @@ function loadMarkdownReviews() {
             tempContainer.innerHTML = html;
             console.log(tempContainer.innerHTML);
             // Найдем все блоки отзывов
-            const paragraphs = tempContainer.querySelectorAll("p");
+            const paragraphs = tempContainer.querySelectorAll("li");
             paragraphs.forEach(paragraph => {
                 let name = "Анонимный пользователь";
                 let date = "Дата неизвестна";
