@@ -34,21 +34,24 @@ function addReview() {
 };
 
 function loadReviews() {
-    // Пробуем получить отзывы из localStorage
-    let reviews = JSON.parse(localStorage.getItem("reviews"));
-    if (!reviews) {
-        // Если отзывов нет, загружаем их из файла reviews.json
-        fetch("reviews.json")
-            .then(response => response.json())
-            .then(data => {
-                // Сохраняем полученные отзывы в localStorage
-                localStorage.setItem("reviews", JSON.stringify(data));
-                data.forEach(displayReview);
-            })
-            .catch(error => console.error("Ошибка загрузки JSON отзывов:", error));
-    } else {
-        reviews.forEach(displayReview);
-    }
+    fetch("reviews.json")
+        .then(response => response.json())
+        .then(data => {
+            // Получаем отзывы из localStorage, если они есть
+            let localReviews = JSON.parse(localStorage.getItem("reviews")) || [];
+            // Объединяем данные из JSON с локальными отзывами
+            const allReviews = [...data, ...localReviews];
+            // Сохраняем объединённый массив в localStorage
+            localStorage.setItem("reviews", JSON.stringify(allReviews));
+            // Отображаем все отзывы
+            allReviews.forEach(displayReview);
+        })
+        .catch(error => {
+            console.error("Ошибка загрузки JSON отзывов:", error);
+            // Если ошибка, пытаемся отобразить данные из localStorage
+            let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+            reviews.forEach(displayReview);
+        });
 };
 
 function displayReview(review) {
