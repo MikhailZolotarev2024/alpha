@@ -41,6 +41,7 @@ function displayReview(review) {
     div.classList.add("review");
     div.innerHTML = `<strong>${review.name}</strong><p>${review.text}</p><small>${review.date}</small>`;
     reviewList.prepend(div);
+	console.log(review);
 }
 
 // 🔥 Загружаем отзывы из `reviews.md`
@@ -48,16 +49,33 @@ function loadMarkdownReviews() {
     fetch("reviews.md")
         .then(response => response.text())
         .then(text => {
-            const reviews = text.split("\n\n"); // Разделяем по пустым строкам (если отзывы идут через отступ)
-            reviews.forEach(block => {
-                const lines = block.split("\n").map(line => line.trim());
-                if (lines.length < 3) return; // Пропускаем некорректные блоки
+            const converter = new showdown.Converter();
+            const html = converter.makeHtml(text);
+            
+            // Временный контейнер для парсинга HTML
+            const tempContainer = document.createElement("div");
+            tempContainer.innerHTML = html;
+            console.log(tempContainer.innerHTML);
+            // Найдем все блоки отзывов
+            const paragraphs = tempContainer.querySelectorAll("p");
+            paragraphs.forEach(paragraph => {
+                let name = "Анонимный пользователь";
+                let date = "Дата неизвестна";
+                let text = paragraph.innerHTML.trim();
 
-                let name = lines[0]; // Имя - первая строка
-                let date = lines[1]; // Дата - вторая строка
-                let text = lines.slice(2).join(" "); // Остальное - отзыв
+                // Попробуем найти имя и дату перед отзывом
+                const prevElement = paragraph.previousElementSibling;
+                if (prevElement && prevElement.tagName === "STRONG") {
+                    name = prevElement.innerText;
+                }
 
-                displayReview({ name, date, text });
+                const prevPrevElement = prevElement ? prevElement.previousElementSibling : null;
+                if (prevPrevElement && prevPrevElement.tagName === "SMALL") {
+                    date = prevPrevElement.innerText;
+                }
+
+                const review = { name, text, date };
+                displayReview(review);
             });
         })
         .catch(error => console.error("Ошибка загрузки отзывов:", error));
