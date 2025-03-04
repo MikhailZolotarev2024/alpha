@@ -84,7 +84,7 @@ function addReview() {
 }
 
 function loadReviews() {
-    console.log("Загружаем отзыв:", review);
+    console.log("Загруженные отзывы:", reviews);
     const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
     reviews.forEach(displayReview);
     console.log("Загруженные отзывы:", reviews);
