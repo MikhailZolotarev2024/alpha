@@ -38,13 +38,13 @@ function loadReviews() {
         .then(response => response.json())
         .then(jsonData => {
             // Сначала показываем отзывы из JSON
+            jsonData.forEach(displayReview);
+            // Затем показываем локальные отзывы, чтобы они оказались вверху
             const localReviews = JSON.parse(localStorage.getItem("reviews")) || [];
             localReviews.forEach(displayReview);
-            jsonData.forEach(displayReview);
         })
         .catch(error => {
             console.error("Ошибка загрузки JSON отзывов:", error);
-            // Если не получилось загрузить JSON, хотя бы покажем localStorage
             const localReviews = JSON.parse(localStorage.getItem("reviews")) || [];
             localReviews.forEach(displayReview);
         });
