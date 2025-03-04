@@ -48,21 +48,16 @@ function loadMarkdownReviews() {
     fetch("reviews.md")
         .then(response => response.text())
         .then(text => {
-            const converter = new showdown.Converter();
-            const html = converter.makeHtml(text);
-            
-            // Создаем временный контейнер для обработки Markdown
-            const tempContainer = document.createElement("div");
-            tempContainer.innerHTML = html;
+            const reviews = text.split("\n\n"); // Разделяем по пустым строкам
+            reviews.forEach(block => {
+                const lines = block.split("\n").map(line => line.trim());
+                if (lines.length < 3) return; // Если отзыв неполный, пропускаем
 
-            // Добавляем каждый отзыв в карточку
-            tempContainer.querySelectorAll("p").forEach(paragraph => {
-                const review = {
-                    name: "Анонимный пользователь", // Можно заменить, если в Markdown есть имя
-                    text: paragraph.innerHTML,
-                    date: "Дата неизвестна" // Можно добавить, если есть дата
-                };
-                displayReview(review); // Используем ту же функцию, что и для localStorage
+                let name = lines[0]; // Первая строка — имя
+                let date = lines[1]; // Вторая строка — дата
+                let text = lines.slice(2).join(" "); // Всё остальное — сам отзыв
+
+                displayReview({ name, date, text });
             });
         })
         .catch(error => console.error("Ошибка загрузки отзывов:", error));
