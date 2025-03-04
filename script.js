@@ -84,14 +84,11 @@ function addReview() {
 }
 
 function loadReviews() {
-    console.log("Загруженные отзывы:", reviews);
     const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
     reviews.forEach(displayReview);
-    console.log("Загруженные отзывы:", reviews);
 }
 
 function displayReview(review) {
-    console.log("Добавляем отзыв:", review);
     const reviewList = document.querySelector(".review-list");
     const div = document.createElement("div");
     div.classList.add("review");
